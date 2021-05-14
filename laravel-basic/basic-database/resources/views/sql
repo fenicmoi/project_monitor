@@ -1,0 +1,66 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.7
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: 14 พ.ค. 2021 เมื่อ 06:45 AM
+-- เวอร์ชันของเซิร์ฟเวอร์: 5.7.32
+-- PHP Version: 7.4.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `basic`
+--
+
+-- --------------------------------------------------------
+
+--
+-- โครงสร้างตาราง `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `two_factor_secret` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_recovery_codes` text COLLATE utf8mb4_unicode_ci,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `current_team_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `profile_photo_path` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- dump ตาราง `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`) VALUES
+(1, 'somsak', 'fenics128@gmail.com', NULL, '$2y$10$WouGyK8OBl1LkpeGAPk.iuIgLzDjEg6SxtqQ1HqLoR9WkwVCRqOoS', NULL, NULL, NULL, NULL, NULL, '2021-04-29 09:18:37', '2021-04-29 09:25:33'),
+(2, 'panjarat', 'fenicmoi@hotmail.com', NULL, '$2y$10$HnCytYYXmxog4Uux82Z.eOLJzJt4seFGzxx9gjlZ/kNKObX.kjWKe', NULL, NULL, NULL, NULL, NULL, '2021-05-04 07:08:35', '2021-05-04 07:08:35'),
+(3, 'lin', 'panjarat.narak@gmail.com', NULL, '$2y$10$DQc9hlbsGiwmWpZsTM9ciOtZEpOwwGUyg975l/vlOq3ez0kqQgwuK', NULL, NULL, NULL, NULL, NULL, '2021-05-04 07:38:38', '2021-05-04 07:38:38');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
