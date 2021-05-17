@@ -16,7 +16,7 @@
                     <th scope="col">ลำดับ</th>
                     <th scope="col">ชื่อ</th>
                     <th scope="col">email</th>
-                    <th scope="col">เริ่มใช้ระบบtest</th>
+                    <th scope="col">เริ่มใช้ระบบ</th>
                     </tr>
                 </thead>
                 <tbody>
