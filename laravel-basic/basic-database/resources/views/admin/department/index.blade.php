@@ -47,12 +47,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="card my-2">
+                @if (count($trashDepartment)>0)
+                <div class="card my-2">
                         <div class="card-header">
                             ถังขยะ
                         </div>
                         <div class="card-body">
+
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -61,29 +62,31 @@
                                                 <th>พนักงาน</th>
                                                 <th>Create</th>
                                                 <th>Restore</th>
-                                                <th>True Del</th>
+                                                <th>ลบถาวร</th>
                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
                                         
-                                        @foreach($departments as $row)
+                                        @foreach($trashDepartment as $row)
                                         <tr>
-                                            <td>{{$departments->firstItem()+$loop->index}}</td>
+                                            <td>{{$trashDepartment->firstItem()+$loop->index}}</td>
                                             <td>{{$row->department_name}}</td>
                                             <td>{{$row->user->name}}</td>
                                             <td>{{Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</td>
-                                            <td><a href="{{url('/department/edit/'.$row->id)}}" class="btn btn-primary">edit</a></td>
-                                            <td><a href="{{url('/department/softdelete/'.$row->id)}}" class="btn btn-danger">del</a></td>
+                                            <td><a href="{{url('/department/restore/'.$row->id)}}" class="btn btn-primary">Restore</a></td>
+                                            <td><a href="{{url('/department/softdelete/'.$row->id)}}" class="btn btn-danger">Del</a></td>
                                         </tr>
                                         @endforeach
                                         </tbody>
                                     </table>
                         </div>
                         <div class="card-footer text-muted">
-                            footer
+                        {{$trashDepartment -> links()}}
                         </div>
-                    </div>                           
+                    </div> 
+                @endif
+                          
                 </div>
 
                 <div class="col-md-4">
@@ -108,7 +111,7 @@
                             </form>
                         </div>
                         <div class="card-footer text-muted">
-                            Footer
+                        
                         </div>
                     </div>
                 </div>
