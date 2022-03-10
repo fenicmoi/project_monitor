@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+    font-family: 'iannnnnVCD2007Regular';
+    src: url('../fonts/iannnnnvcd_2007-webfont.eot');
+    src: url('../fonts/iannnnnvcd_2007-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/iannnnnvcd_2007-webfont.woff') format('woff'),
+         url('../fonts/iannnnnvcd_2007-webfont.ttf') format('truetype'),
+         url('../fonts/iannnnnvcd_2007-webfont.svg#iannnnnVCD2007Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

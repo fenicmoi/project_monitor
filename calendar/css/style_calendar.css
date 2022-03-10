@@ -1,0 +1,150 @@
+@charset "utf-8";
+/* CSS Document */
+#calendar-main
+{	
+	border:1px solid #060;
+	background-color:#E8FFE8;
+	padding:15px 5px 5px 10px;
+	margin:0px auto;
+	overflow:hidden;
+	width:1200px;
+}
+/*
+#calendar-main .dayname{
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;	
+	height:40px;
+	width:140px;	
+	border:1px solid #CCC;
+	background-color:#EEE;
+	padding:0px 0px 0px 0px;
+	font-size:1.2em;
+}
+*/
+#calendar-main #month-name{
+	float:left;
+	margin:1px;
+	width:1200px;	
+	border:0px solid #CCC;
+	padding:0px;
+	
+}
+#calendar-main .dayname{
+	float:left;
+	margin:1px;
+	text-align:center;	
+	height:40px;
+	width:166px;	
+	border:1px solid #CCC;
+	background-color:#CCC;
+	padding:15px 0px 0px 0px;
+	font-size:1.4em;
+	font-weight:bold;
+	color:#000;
+}
+#calendar-main .sunname{
+	float:left;
+	margin:1px;
+	height:40px;
+	width:166px;	
+	text-align:center;
+	border:1px solid #CCC;
+	background-color:#ffff00;
+	padding:15px 0px 0px 0px;
+	font-size:1.4em;
+	font-weight:bold;
+	color:#F00;
+}
+#calendar-main .satname{
+	float:left;
+	margin:1px;
+	height:40px;
+	width:166px;	
+	border:1px solid #CCC;
+	background-color:#ffff00;
+	padding:15px 0px 0px 0px;
+	text-align:center;
+	font-size:1.4em;
+	font-weight:bold;
+	color:#03F;
+}
+
+
+
+#calendar-main .daynum-none{
+	float:left;
+	width:166px;	
+	min-height:130px;
+	border:1px solid #E8FFE8;
+	/*background-color:#FFF;*/
+	padding:0px;
+	margin:1px ;
+	
+
+}
+#calendar-main .day{
+	float:left;
+	width:166px;	
+	min-height:130px;
+	border:1px solid #CCC;
+	background-color:#FFF;
+	padding:0px;
+	margin:1px ;
+}
+#calendar-main .day p.daynum{
+	padding:2px 0px 0px 5px;
+	margin:0px 0px 0px 0px;
+	font-size:1em;
+	font-weight:bold;
+	color:#209D00;
+}
+
+#calendar-main .thisday{
+	float:left;
+	width:166px;	
+	min-height:130px;
+	border:1px solid #CCC;
+	background:url(../images/Calendar02.gif) no-repeat #FFF;
+	padding:0px;
+	margin:1px ;
+}
+
+#calendar-main .thisday p.daynum{
+	padding:5px 0px 0px 0px;
+	margin:0px 0px 0px 0px;
+	font-size:1.1em;
+	font-weight:bold;
+	color:#1923A5;
+	border:0px solid #CCC;
+	width:32px;
+	text-align:center;
+}
+
+#calendar-main div.mcd{
+	padding:2px 2px 2px 2px;
+	margin:0px 0px 0px 0px;
+	font-size:.9em;
+	font-weight:none;
+	color:#333;
+	border:0px solid #CCC;
+	width:132px;
+	text-align:left;
+}
+
+#calendar-main div.mcd1{
+	padding:8px 2px 2px 2px;
+	margin:0px 0px 0px 0px;
+	font-size:.9em;
+	font-weight:none;
+	color:#333;
+	border:0px solid #CCC;
+	width:132px;
+	text-align:left;
+}
+
+a.example7 {color: #333; text-decoration: none; FONT-SIZE: .9em;	FONT-FAMILY:Tahoma;}
+a.example7:hover { color: #333; text-decoration: underline; FONT-SIZE: .9em;FONT-FAMILY:Tahoma;}
+
+
+#calendar-main div.mcd1{}

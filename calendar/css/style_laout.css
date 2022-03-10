@@ -1,0 +1,358 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+body {
+  font-family: 'Taviraj', serif;
+}
+
+.tap_clear {
+    clear: both;
+}
+
+H1 {
+    padding: 0px;
+    margin: 0px;
+    float: left;
+}
+
+#headerBG {
+    padding: 0px;
+    margin: 0px auto;
+    height: 226px;
+    width: 1000px;
+    background-color: #FFF;
+    border: 0px solid #F00;
+    overflow: hidden;
+}
+
+
+/*     ************************ Top banner   ********************   */
+
+#bgmenu {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 0 0 0 0px;
+    height: 37px;
+    border: 0px solid #0F0;
+    z-index: 1;
+    position: relative;
+    background: url(../images/bgmenu.gif) repeat-x left;
+}
+
+#top-banner-img {
+    width: 1000px;
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    border: 0px solid #0F0;
+    overflow: hidden;
+}
+
+#topmenu {
+    float: left;
+    width: 984px;
+    margin: 0px;
+    padding: 0px 0 0 0px;
+    border: 0px solid #0F0;
+    z-index: 1;
+    overflow: hidden;
+    text-align: left;
+}
+
+#topmenu ul.menu {
+    width: 200px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px solid #F00;
+    overflow: hidden;
+    float: left;
+}
+
+#topmenu ul li {
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    line-height: 40px;
+    height: 40x;
+    border: 0px solid #F00;
+}
+
+#topmenu ul li.mhome a {
+    background: url(../images/menu-home_hover.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mhome a:hover {
+    background: url(../images/menu-home.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mallcar a {
+    background: url(../images/menu-allcars_hover.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mallcar a:hover {
+    background: url(../images/menu-allcars.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mscar a {
+    background: url(../images/menu-search_hover.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mscar a:hover {
+    background: url(../images/menu-search.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.myplan a {
+    background: url(../images/menu-myplan_hover.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.myplan a:hover {
+    background: url(../images/menu-myplan.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mabout a {
+    background: url(../images/menu-contact_hover.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#topmenu ul li.mabout a:hover {
+    background: url(../images/menu-contact.gif) no-repeat left;
+    width: 200px;
+    float: left;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
+}
+
+#menu_slide {
+    position: absolute;
+    margin-top: -1px;
+    margin-left: 350px;
+    background-color: #ECFDD4;
+    z-index: 999;
+    border: 1px solid #090;
+    font-size: 1em;
+    /* display:none;  	*/
+}
+
+#menu_slide tr td.topsubmenu {
+    border-bottom: 1px solid #090;
+    line-height: 40px;
+}
+
+#menu_slide tr td a {
+    font-family: Tahoma, Geneva, sans-serif;
+    display: inline;
+    padding-left: 4px;
+    font-size: 1.1em;
+
+    color: #0E5298;
+}
+
+#menu_slide tr td a:hover {
+    display: inline;
+    text-decoration: underline;
+}
+
+
+/*     ************************ Main continer  ********************   */
+
+#mainContainer {
+    clear: both;
+    width: 996px;
+    margin: 0px auto;
+    background-color: #FFF;
+    border: 0px solid #9ECA52;
+    padding: 4px 2px 2px 2px;
+    overflow: hidden;
+}
+
+#mainContainer #mainData {
+    border: 1px solid #F00;
+}
+
+#main {
+    background-color: #FFF;
+}
+
+#promotion {
+    margin: 0 auto;
+    width: 96%;
+    border: 0px solid #9ECA52;
+    min-height: 30px;
+}
+
+#promotion p {
+    margin: 10px 0px 0px 0px;
+    padding: 0px;
+}
+
+#MenuContent {
+    margin: 0 auto;
+    width: 1000px;
+    border: 0px solid #9ECA52;
+    background-color: #FFF;
+    min-height: 27px;
+    overflow: hidden;
+}
+
+p.userDetail_Menu {
+    margin: 0px 0px 0px 5px;
+    float: left;
+    padding-left: 0px;
+    width: 900px;
+    text-align: left;
+    border: 0px solid #9ECA52;
+}
+
+div #userMenuList {
+    clear: both;
+    padding: 2px 2px 2px 2px;
+    margin: 3px 0px 0px 5px;
+    border: 1px solid #c0c0c0;
+    width: 984px;
+    background-color: #F4F4F4;
+}
+
+#RightContent {
+    margin: 0px 0px 0px 2px;
+    width: 782px;
+    min-height: 400px;
+    border: 0px dotted #91BBF1;
+    float: left;
+    padding-left: 10px;
+}
+
+#flogin {
+    width: 979px;
+    text-align: center;
+    border: 1px solid #9ECA52;
+}
+
+#leftcontent {
+    padding: 0px 2px 2px 2px;
+    float: left;
+    width: 550px;
+    text-align: center;
+    border: 0px solid #9ECA52;
+}
+
+.mandetail {
+    width: 250px;
+    margin: 2px;
+    padding: 2px;
+    float: left;
+}
+
+.man-pic {
+    width: 200px;
+    margin: 2px;
+    padding: 2px;
+    text-align: center;
+}
+
+.man-name {
+    clear: both;
+    width: 200px;
+    margin: 2px;
+    padding: 2px;
+    text-align: center;
+}
+
+
+/*********************************** footer ****************************************/
+
+#footer {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 0px 0px;
+    background-color: #8FDEDE;
+    text-align: center;
+    height: 120px;
+    line-height: 20px;
+}
+
+
+/*********************************** cdetail ****************************************/
+
+#cdetail {
+    background: url(../images/bgcdetail.jpg) top no-repeat #FFF;
+    margin: 0px;
+    padding: 0px;
+}
+
+#cdetail #mdetail {
+    float: left;
+    margin: 0px;
+    padding: 45px 45px 45px 45px;
+    width: 650px;
+    height: 65px;
+    border: 3px solid #9ECA52;
+    text-align: right;
+}
+
+#cdetail #mpic {
+    float: right;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+    width: 110px;
+    height: 110px;
+    border: 0px solid #9ECA52;
+    background-color: #FFF;
+    text-align: center;
+}

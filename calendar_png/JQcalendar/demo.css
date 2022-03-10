@@ -1,0 +1,99 @@
+
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	/*font-family: Verdana, sans;*/
+}
+h1 {
+	font-size: 1.6em;
+	margin: 0 0 1em;
+	padding: 0 0 .3em;
+	border-bottom: 4px solid #ccc;
+}
+h1.home {
+	margin: 0;
+	border: none;
+}
+h2 {
+	font-size: 1.2em;
+	margin: 1em 0 1em;
+	padding: 0 0 .3em;
+	border-bottom: 2px solid #ccc;
+}
+h3 {
+	font-size: 1.1em;
+	font-weight: normal;
+	padding: 0 0 10px;
+	border-bottom: 2px solid #ccc;
+}
+p {
+	margin: 1em 0;
+}
+ul {
+	margin: 0 0 0 20px;
+}
+dt {
+	margin: 1em 0 .2em;
+	font-weight: bold;
+}
+dd {
+	margin: .2em 0 1em;
+}
+
+fieldset {
+	margin: 10em;
+	padding: 0 10px;
+	width: 180px;
+	border:#00F 1px solid;
+	width:400px;
+}
+legend{
+	color:#F00;
+	margin:	auto;
+}
+label {
+	display: inline-block;
+	line-height: 1.8;
+	vertical-align:middle;
+	float:left;
+}
+#chooseDateForm li {
+	list-style: none;
+	padding: 5px;
+	clear: both;
+}
+
+input.dp-applied {
+	margin: 1px 0px 0px 0px;
+	width: 90px;
+	float: left;
+}
+
+a.dp-choose-date {
+	float: left;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 2px 3px 0;
+	display: block;
+	text-indent: -2000px;
+	overflow: hidden;
+	background: url(../images/calenda.png) no-repeat; 
+}
+a.dp-choose-date.dp-disabled {
+	background-position: 0 -20px;
+	cursor: default;
+}
+
+#calendar-me {
+	margin: 20px;
+}
+pre.sourcecode {
+	border: 2px dashed #ccc;
+	padding: 10px;
+	width: 734px;
+	overflow: auto;
+	margin: 0 0 20px;
+}
