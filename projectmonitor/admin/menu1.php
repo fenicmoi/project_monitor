@@ -15,7 +15,7 @@ if(!isset($_SESSION['ses_u_id'])){
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-              <i class="fa fa-cog" aria-hidden="true"></i> Administrator
+              <i class="fa fa-cog" aria-hidden="true"></i> Administratorss
           </a>
         </h4>
       </div>
