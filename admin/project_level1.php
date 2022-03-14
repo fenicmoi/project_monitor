@@ -40,17 +40,21 @@ $u_id=$_SESSION['ses_u_id'];
            <?php
                 $menu =  checkMenu($level_id);
                 include $menu;
+
+                //ดึงข้อมูลโครงการหลัก
+                $m_id = $_GET['m_id'];
+                $sql = "SELECT * FROM project_master WHERE m_id = $m_id ";
+                $result = dbQuery($sql);
+                $row = dbFetchAssoc($result);
+
            ?>
         </div>
     
         <div  class="col-md-10">
             <div class="panel panel-default" >
                 <div class="panel-heading">
-                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>  <strong>โครงการงบจังหวัด</strong>
-                    <a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalReserv">
-                    <i class="fas fa-hand-point-up"></i> จองเลข
-                     </a>
-                    <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> เพิ่มโครงการหลัก</a>
+                <button class="btn btn-warning" onclick="history.back()">กลับโครงการหลัก</button>  <strong><?php echo $row['project_name'];?></strong>
+                    <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> เพิ่มโครงการย่อย</a>
                     <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button>
                 </div>
                  <table class="table table-bordered table-hover" border=2>
@@ -83,9 +87,10 @@ $u_id=$_SESSION['ses_u_id'];
                                     </td>
                                 </tr>
                             <tr>
-                                <th>รหัสโครงการ</th>
+                                
                                 <th>ลำดับที่</th>
                                 <th>ชื่อโครงการ</th>
+                                <th>ความก้าวหน้า(%)</th>
                                 <th>งบประมาณ</th>
                                 <th>งบลงทุน</th>
                                 <th>งบดำเนินการ</th>
@@ -98,9 +103,10 @@ $u_id=$_SESSION['ses_u_id'];
                         </thead>
                         <tbody>
                             <?php
-                                $sql="SELECT p.*, y.yname, d.dep_name FROM  project_master as p
-                                      INNER JOIN depart as d ON d.dep_id = p.dep_id
-                                      INNER JOIN sys_year as y ON y.yid = p.yid ORDER BY p.yid DESC";
+                                $sql="SELECT l1.*,d.dep_name, y.yname FROM project_level1  as l1 
+                                      INNER JOIN depart as d  ON d.dep_id = l1.dep_id
+                                      INNER JOIN sys_year as y on y.yid = l1.yid 
+                                      ORDER BY l_id DESC";
                                 // print $sql;                     
                                  //ส่วนการค้นหา
                                  if(isset($_POST['btnSearch'])){
@@ -128,17 +134,18 @@ $u_id=$_SESSION['ses_u_id'];
                                 $result = page_query( $dbConn, $sql, 10 );
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
-                                        <td><?php echo $row['m_id']; ?></td>
+                                       
                                         <td><?php echo $row['order_id'];?></td>
                                         <td>
                                             <?php  $cid=$row['']; ?>
                                             <a href="#" 
                                                 onClick="loadData('<?php print $m_id;?>','<?php print $u_id; ?>');" 
                                                 data-toggle="modal" data-target=".bs-example-modal-table">
-                                                <?php echo $row['project_name'];?> 
+                                                <?php echo $row['level1name'];?> 
                                             </a>
-                                            <i class="fas fa-plus"></i> <a class="badge badge-warning"" href="project_level1.php?m_id=<?php echo $row['m_id'];?>">โครงการย่อย</a>
+                                            <i class="fas fa-plus"></i> <a href="">แผนงานย่อย</a>
                                         </td>
+                                        <td><?php echo $row['percentage']; ?></td>
                                         <td><?php echo number_format($row['money_total'],0) ?></td>
                                         <td><?php echo number_format($row['inver_budget'],0)?></td>
                                         <td><?php echo number_format($row['opra_budget'],0)?></td>
@@ -173,7 +180,7 @@ $u_id=$_SESSION['ses_u_id'];
                 <div class="modal-content">
                   <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> เพิ่มโครงการหลัก</h4>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> เพิ่มโครงการย่อย</h4>
                   </div>
                   <div class="modal-body bg-success"> 
                      <form name="form" method="post" enctype="multipart/form-data">
@@ -181,55 +188,17 @@ $u_id=$_SESSION['ses_u_id'];
                             <tr>
                                 <td>
                                     <div class="form-group form-inline">
-                                        <label for="yid">ปีเอกสาร : </label>
+                                        <label for="yid">ปีงบประมาณ : </label>
                                         <input class="form-control"  name="yid" type="text" value="<?php print $yname; ?>" disabled="">
                                     </div>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
                                      <div class="form-group form-inline">
                                         <label for="currentDate">วันที่ทำรายการ :</label>
                                         <input class="form-control" type="text" name="currentDate" value="<?php print DateThai();?>" disabled="">
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="form-group form-inline"> 
-                                        <label for="bid">แหล่งงบประมาณ: </label>
-                                        <select name="budget_type" class="form-control" required>
-                                            <?php 
-                                                 //วัตถุประสงค์
-                                                $sql="SELECT * FROM budget_type ORDER BY bid";
-                                                $result = dbQuery($sql);
-                                                while ($row=dbFetchArray($result)){
-                                                echo "<option  value=".$row['bid'].">".$row['bname']."</option>";
-                                            }?>
-                                        </select>
-                                    </div>
-                                </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group form-inline"> 
-                                            <label for="target_id">ผลผลิต: </label>
-                                            <select name="target_id" class="form-control" required>
-                                                <?php 
-                                                    //วัตถุประสงค์
-                                                    $sql="SELECT * FROM target ORDER BY target_id";
-                                                    $result = dbQuery($sql);
-                                                    while ($row=dbFetchArray($result)){
-                                                    echo "<option  value=".$row['target_id'].">".$row['target_name']."</option>";
-                                                }?>
-                                            </select>
-                                    </div>   
-                                </td>
-                                <td>
-                                 <div class="form-group form-inline">
-                                     <label>เลขทะเบียนโครงการ : <kbd>ออกโดยระบบ</kbd></label>
-                                    </div>
-                                </td>
-                            </tr>
-
                             <tr>
                                 <td >
                                     <div class="form-group form-inline"> 
@@ -248,9 +217,31 @@ $u_id=$_SESSION['ses_u_id'];
                                 <td>
                                     <div class="form-group form-inline">
                                         <label for="order_id">ลำดับที่โครงการ : </label>
-                                        <input class="form-control" id="order_id"  name="order_id" type="number">
+                                        <input class="form-control" id="order_id"  name="order_id" type="number" require  >
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                    <td colspan=2>
+                                        <div class="form-group">
+                                            <div class="input-group col-4">
+                                                <span class="input-group-addon">ร้อยละความสำเร็จ : </span>
+                                                <input class="form-control" type="text"   name="percentage" id="percentage" required >
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                            </tr>
+                            <tr>
+                            <td colspan=2>
+                                        <div class="form-group">
+                                            <div class="input-group col-4">
+                                                <span class="input-group-addon">หมายเหตุ : </span>
+                                                <input class="form-control" type="text"   name="remark" id="remark" require>
+                                                
+                                            </div>
+                                        </div>
+                                    </td>
                             </tr>
                         </table>
                         </div>
@@ -263,7 +254,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon">ชื่อโครงการ : </span>
-                                                <input class="form-control" type="text" size=100  name="project_name" id="project_name" size="50" required >
+                                                <input class="form-control" type="text" size=100  name="level1name" id="level1name" size="50" required >
                                             </div>
                                         </div>
                                     </td>
@@ -283,19 +274,8 @@ $u_id=$_SESSION['ses_u_id'];
                                     <td colspan=2>
                                         <div class="form-group">
                                             <div class="input-group">
-                                            <span class="input-group-addon">งวด1 : </span>
-                                            <input class="form-control" type="number" size=100   name="recive1" id="recive1"  >
-                                            <span class="input-group-addon">บาท : </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan=2>
-                                        <div class="form-group">
-                                            <div class="input-group">
                                             <span class="input-group-addon">งบลงทุน : </span>
-                                            <input class="form-control" type="number" size=100   name="inver_budget" id="inver_budget"  >
+                                            <input class="form-control" type="number" size=100   name="inver_budget" id="inver_budget"  require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -306,14 +286,45 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งบดำเนินงาน : </span>
-                                            <input class="form-control" type="number" size=100   name="opra_budget" id="opra_budget"  >
+                                            <input class="form-control" type="number" size=100   name="opra_budget" id="opra_budget" require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                             
-                               
+                                <tr>
+                                    <td colspan=2>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">งวด1 : </span>
+                                            <input class="form-control" type="number" size=100   name="recive1" id="recive1" require >
+                                            <span class="input-group-addon">บาท : </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">งวด2 : </span>
+                                            <input class="form-control" type="number" size=100   name="recive2" id="recive2" require >
+                                            <span class="input-group-addon">บาท : </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">งวด3 : </span>
+                                            <input class="form-control" type="number" size=100   name="recive3" id="recive3" require >
+                                            <span class="input-group-addon">บาท : </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                          </div> <!-- class well -->    
                          
@@ -322,6 +333,7 @@ $u_id=$_SESSION['ses_u_id'];
                                     <i class="fa fa-floppy-o fa-2x"></i> บันทึก
                                     <input id="u_id" name="u_id" type="hidden" value="<?php echo $u_id; ?>"> 
                                     <input id="yid" name="yid" type="hidden" value="<?php echo $yid; ?>"> 
+                                    <input id = "m_id" name="m_id" type="hidden" value="<?php echo $m_id;?>">
                                     </button>
                                </center>    
                      </form>
@@ -365,21 +377,27 @@ date_default_timezone_set('Asia/Bangkok'); //วันที่
 
 
 if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟอร์มบันทึก
+    $m_id = $_POST['m_id']; 
     $order_id = $_POST['order_id'];
-    $project_name = $_POST['project_name'];
+    $level1name = $_POST['level1name'];
     $money_total = $_POST['money_total'];
     $inver_budget = $_POST['inver_budget'];
     $opra_budget = $_POST['opra_budget'];
     $recive1 = $_POST['recive1'];
+    $recive2 = $_POST['recive2'];
+    $recive3 = $_POST['recive3'];
     $dep_id = $_POST['dep_id'];
-    $yid= $yid;
-    $target_id = $_POST['target_id'];
-    $budget_type = $_POST['budget_type'];
+    $yid= $_POST['yid'];
+    $percentage = $_POST['percentage'];
+    $remark = $_POST['remark'];
 
-        $sqlInsert="INSERT INTO project_master
-                         (order_id, project_name, money_total, inver_budget, opra_budget, recive1, dep_id, yid, target_id, budget_type)    
-                    VALUE($order_id, '$project_name', $money_total, $inver_budget, $opra_budget, $recive1, $dep_id, $yid, $target_id, $budget_type)";
-       
+        $sqlInsert="INSERT INTO project_level1
+                         (m_id, order_id, level1name, money_total, inver_budget, opra_budget, recive1, recive2,recive3, yid,dep_id, percentage,remark)    
+                    VALUE($m_id, $order_id, '$level1name', $money_total, $inver_budget, $opra_budget, $recive1, $recive2, $recive3, $yid, $dep_id, $percentage, '$remark')
+                
+                    ";
+       echo $sqlInsert;
+       /*
         $result=dbQuery($sqlInsert);
          if($result){
             echo "<script>
@@ -390,12 +408,11 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='project_master.php';
+                        window.location.href='project_level1.php';
                     }
                 }); 
             </script>";
         }else{
-            dbQuery("ROLLBACK");
             echo "<script>
             swal({
                 title:'มีบางอย่างผิดพลาด! กรุณาตรวจสอบ',
@@ -404,11 +421,12 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='project_master.php';
+                        window.location.href='project_level1.php';
                     }
                 }); 
             </script>";
         } 
+        */
         
 }
 
@@ -450,120 +468,6 @@ if(isset($_POST['update'])){
     }
 }       
 ?>
-
-
-
-<!-- Modal Reserv -->
-<div id="modalReserv" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-       <h4 class="modal-title"> <i class="fas fa-plus"></i> จองเลข</h4>
-      </div>
-      <div class="modal-body">
-         <div class="alert alert-danger"><i class="fas fa-comments" fa-2x></i>ระบุจำนวนเอกสารที่ต้องการจอง</div>
-         <form name="form" method="post" enctype="multipart/form-data">
-
-         <div class="form-group col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">เลขหน่วยงาน:</span>
-                <input type="prefex" class="form-control" name="prefex" max=10  placeholder="เลขหน่วยงาน">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6">
-            <div class="input-group">
-                <span class="input-group-addon">จำนวน:</span>
-                <input type="number" class="form-control" name="num" max=100  placeholder="ไม่เกิน 10 ฉบับ">
-            </div>
-          </div>
-
-             <center> <button class="btn btn-success" type="submit" name="btnReserv" id="btnReserv"><i class="fas fa-save fa-2x"></i> บันทึก</button></center>
-         </form>
-      </div>
-      <div class="modal-footer bg-primary">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!--  process  Reserv -->
-<?php
-if(isset($_POST['btnReserv'])){
-
-       
-
-        $u_id = $_SESSION['ses_u_id'];
-        $obj_id = 1;
-        $yid = $yid;
-        $typeDoc = '0';
-        $title = 'จองเลข';
-        $speed_id = 4;
-        $sec_id= $_SESSION['ses_sec_id'];
-        $sendfrom = '-';
-        $sendto= '-';
-        $refer = '-';
-        $attachment = '-';
-        $practice = $_SESSION['ses_dep_id'];
-        $file_location = '-';
-        $dateline = date("Y-m-d");
-        $dateout = date("Y-m-d");
-        $status = 2;
-        $follow = 0;
-        $open = 0;
-        $file_upload = '-';
-        $state_send = '0';
-        $dep_id = $_SESSION['ses_dep_id'];
-
-        $prefex = $_POST['prefex'];
-        $num = $_POST['num'];
-        $a=0;
-     
-        $sql = "SELECT dep_name FROM depart WHERE dep_id =$dep_id";
-        $result = dbQuery($sql);
-        $row = dbFetchAssoc($result);
-        $dep_name = $row['dep_name'];
-      
-    
-
-        while ($a < $num) {
-            $sql = "SELECT max(rec_no) as rec_no FROM flownormal where yid=$yid";
-            $result = dbQuery($sql);
-            $row = dbFetchArray($result);
-            $rec_no = $row['rec_no'];
-            $rec_no = $rec_no + 1;
-
-
-
-            $sql="INSERT INTO flownormal
-            (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-            VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$dateout',$dep_id)";
-            $result = dbQuery($sql);
-            $a++;
-        }
-        
-        if($a == $num){
-            echo "<script>
-            swal({
-                title:'เรียบร้อย',
-                text:'!มีเวลา 3 วัน หลังวันจอง  เพื่อแก้ข้อมูลให้ถูกต้อง,
-                type:'success',
-                showConfirmButton:true
-                },
-                function(isConfirm){
-                    if(isConfirm){
-                        window.location.href='flow-normal.php';
-                    }
-                }); 
-            </script>";
-        }
-} 
-?>
-
 
 <script type="text/javascript">
 function loadData(cid,u_id) {

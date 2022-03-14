@@ -3,6 +3,12 @@
 include 'header.php';
 $u_id = $_SESSION['ses_u_id'];
 ?>
+<script>
+	$( document ).ready( function () {
+
+        $('#depart').select2();
+	} );
+</script>
     <div class="row">
         <div class="col-md-2" >
            <?php
@@ -140,7 +146,7 @@ $u_id = $_SESSION['ses_u_id'];
                           <div class="form-group form-inline">
                               <label for="amphur">ชื่อส่วนราชการ : </label>
                                 <span id="amphur">
-                                    <select class="form-control" required>
+                                    <select class="form-control" id="depart" required>
                                         <option value=''>- เลือกหน่วยงาน -</option>
                                     </select>
                                 </span>
@@ -288,7 +294,8 @@ if (isset($_POST['save'])) {
     } elseif ($numrow < 1) {
         $sql = "INSERT INTO user(sec_id,dep_id,level_id,u_name,u_pass,firstname,lastname,position,date_create,status,email)
                    VALUES ($sec_id,$dep_id,$level_id,'$u_name','$u_pass','$firstname','$lastname','$position','$date_create',$status,'$email')";
-        //echo $sql;
+        echo $sql;
+        
         $result = dbQuery($sql);
         $level_id = $_SESSION['level'];
         if (!$result) {
@@ -304,6 +311,7 @@ if (isset($_POST['save'])) {
                  }
              }); 
            </script>";
+           
         } else {
             echo "<script>
             swal({

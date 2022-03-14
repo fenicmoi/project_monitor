@@ -101,22 +101,9 @@ if($u_id){
     } );
 </script>
 
-<!-- Chatra {literal} -->
-
-<script>
-/*
-    (function(d, w, c) {
-        w.ChatraID = '8hztemC96qH6pieSE';
-        var s = d.createElement('script');
-        w[c] = w[c] || function() {
-            (w[c].q = w[c].q || []).push(arguments);
-        };
-        s.async = true;
-        s.src = 'https://call.chatra.io/chatra.js';
-        if (d.head) d.head.appendChild(s);
-    })(document, window, 'Chatra');
-    */
-</script>
+<!-- select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- /Chatra {/literal} -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
