@@ -40,6 +40,22 @@ if(!isset($_SESSION['ses_u_id'])){
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">
+              <i class="fa fa-credit-card" aria-hidden="true"></i> DESKBOARD
+          </a>
+        </h4>
+      </div>
+      <div id="collapse11" class="panel-collapse collapse">
+        <div class="panel-body">
+            <a class="btn btn-primary btn-block" href="project_master.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i>ข้อมูลสรุป</a>
+            <a class="btn btn-primary btn-block" href="buy.php" ><i class="far fa-arrow-alt-circle-right  pull-left"></i>กราฟ</a>
+            <!-- <a class="btn btn-primary btn-block" href="announce.php"><i class="far fa-arrow-alt-circle-right  pull-left"></i> ประกาศสอบราคา</a> -->
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
               <i class="fa fa-credit-card" aria-hidden="true"></i> โครงการแยกตามแหล่งงบ
           </a>

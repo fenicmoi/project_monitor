@@ -18,6 +18,11 @@
     <!-- popup -->
     <link rel="stylesheet" href="css/popup.css">
 
+    <!-- datatable  -->
+    
+    <link rel="stylesheet" href="cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
 <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">

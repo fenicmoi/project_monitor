@@ -87,11 +87,7 @@ $u_id=$_SESSION['ses_u_id'];
                                 <th>ลำดับที่</th>
                                 <th>ชื่อโครงการ</th>
                                 <th>งบประมาณ</th>
-                                <th>งบลงทุน</th>
-                                <th>งบดำเนินการ</th>
-                                <th>งวดที่1</th>
-                                <th>งวดที่2</th>
-                                <th>งวดที่3</th>
+                                <th>ผลการเบิกจ่าย</th>
                                 <th>ปีงบประมาณ</th>
                                 <th>ผู้รับผิดชอบหลัก</th>
                             </tr>
@@ -100,7 +96,7 @@ $u_id=$_SESSION['ses_u_id'];
                             <?php
                                 $sql="SELECT p.*, y.yname, d.dep_name FROM  project_master as p
                                       INNER JOIN depart as d ON d.dep_id = p.dep_id
-                                      INNER JOIN sys_year as y ON y.yid = p.yid ORDER BY p.yid DESC";
+                                      INNER JOIN sys_year as y ON y.yid = p.yid ORDER BY p.order_id ASC";
                                 // print $sql;                     
                                  //ส่วนการค้นหา
                                  if(isset($_POST['btnSearch'])){
@@ -115,36 +111,39 @@ $u_id=$_SESSION['ses_u_id'];
                                         }
                                     } elseif ( @$typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
                                         if($level_id <=2){
-                                            $sql .= " WHERE title LIKE '%$txt_search%' ";
+                                            $sql .= " WHERE project_name LIKE '%$txt_search%' ";
                                         }else{
-                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
+                                            $sql .= " WHERE project_name LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
                                         }
-                                        $sql .= "ORDER BY cid DESC";
+                                        $sql .= "ORDER BY m_id DESC";
                                     }
 
                                  }//isset 
                                 // print $level_id;
                                 //print $sql;
-                                $result = page_query( $dbConn, $sql, 10 );
+                                $result = page_query( $dbConn, $sql, 20 );
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
                                         <td><?php echo $row['m_id']; ?></td>
                                         <td><?php echo $row['order_id'];?></td>
                                         <td>
-                                            <?php  $cid=$row['']; ?>
+                                            <?php  $m_id=$row['m_id']; ?>
                                             <a href="#" 
-                                                onClick="loadData('<?php print $m_id;?>','<?php print $u_id; ?>');" 
+                                                onClick="loadData('<?php print $m_id;?>','<?php print $yid;?>');" 
                                                 data-toggle="modal" data-target=".bs-example-modal-table">
                                                 <?php echo $row['project_name'];?> 
                                             </a>
-                                            <i class="fas fa-plus"></i> <a class="badge badge-warning"" href="project_level1.php?m_id=<?php echo $row['m_id'];?>">โครงการย่อย</a>
+                                           <a class="badge badge-warning"" href="project_level1.php?m_id=<?php echo $row['m_id'];?>"> <i class="fas fa-plus"></i> โครงการย่อย</a>
                                         </td>
                                         <td><?php echo number_format($row['money_total'],0) ?></td>
-                                        <td><?php echo number_format($row['inver_budget'],0)?></td>
-                                        <td><?php echo number_format($row['opra_budget'],0)?></td>
-                                        <td><?php echo number_format($row['recive1'],0)?></td>
-                                        <td><?php echo number_format($row['recive2'],0)?></td>
-                                        <td><?php echo number_format($row['recive3'],0)?></td>
+                                        <?php  
+                                            //ดึงข้อมูลในตารางย่อยมาหาผลการเบิกจ่าย  
+                                            $sql1 = "SELECT SUM(duplicate) AS total FROM project_level1 where m_id= $row[m_id]";
+                                            $result1 = dbQuery($sql1);
+                                            $row1 = dbFetchArray($result1);
+                                            
+                                        ?>
+                                        <td><?php echo number_format($row1['total'],0)?></td>
                                         <td><?php echo $row['yname'] ?></td>
                                         <td><?php echo $row['dep_name'] ?></td>
                                     </tr>
@@ -343,7 +342,7 @@ $u_id=$_SESSION['ses_u_id'];
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียด</h4>
+                        <h4 class="modal-title"><i class="fa fa-info"></i> รายละเอียดโครงการ</h4>
                     </div>
                     <div class="modal-body no-padding">
                         <div id="divDataview">
@@ -490,88 +489,14 @@ if(isset($_POST['update'])){
   </div>
 </div>
 
-
-<!--  process  Reserv -->
-<?php
-if(isset($_POST['btnReserv'])){
-
-       
-
-        $u_id = $_SESSION['ses_u_id'];
-        $obj_id = 1;
-        $yid = $yid;
-        $typeDoc = '0';
-        $title = 'จองเลข';
-        $speed_id = 4;
-        $sec_id= $_SESSION['ses_sec_id'];
-        $sendfrom = '-';
-        $sendto= '-';
-        $refer = '-';
-        $attachment = '-';
-        $practice = $_SESSION['ses_dep_id'];
-        $file_location = '-';
-        $dateline = date("Y-m-d");
-        $dateout = date("Y-m-d");
-        $status = 2;
-        $follow = 0;
-        $open = 0;
-        $file_upload = '-';
-        $state_send = '0';
-        $dep_id = $_SESSION['ses_dep_id'];
-
-        $prefex = $_POST['prefex'];
-        $num = $_POST['num'];
-        $a=0;
-     
-        $sql = "SELECT dep_name FROM depart WHERE dep_id =$dep_id";
-        $result = dbQuery($sql);
-        $row = dbFetchAssoc($result);
-        $dep_name = $row['dep_name'];
-      
-    
-
-        while ($a < $num) {
-            $sql = "SELECT max(rec_no) as rec_no FROM flownormal where yid=$yid";
-            $result = dbQuery($sql);
-            $row = dbFetchArray($result);
-            $rec_no = $row['rec_no'];
-            $rec_no = $rec_no + 1;
-
-
-
-            $sql="INSERT INTO flownormal
-            (rec_no,u_id,obj_id,yid,typeDoc,prefex,title,speed_id,sec_id,sendfrom,sendto,refer,attachment,practice,file_location,dateline,dateout,dep_id)    
-            VALUE($rec_no,$u_id,$obj_id,$yid,'$typeDoc','$prefex','$title',$speed_id,$sec_id,'$sendfrom','$sendto','$refer','$attachment','$practice','$file_location','$dateline','$dateout',$dep_id)";
-            $result = dbQuery($sql);
-            $a++;
-        }
-        
-        if($a == $num){
-            echo "<script>
-            swal({
-                title:'เรียบร้อย',
-                text:'!มีเวลา 3 วัน หลังวันจอง  เพื่อแก้ข้อมูลให้ถูกต้อง,
-                type:'success',
-                showConfirmButton:true
-                },
-                function(isConfirm){
-                    if(isConfirm){
-                        window.location.href='flow-normal.php';
-                    }
-                }); 
-            </script>";
-        }
-} 
-?>
-
-
 <script type="text/javascript">
-function loadData(cid,u_id) {
+function loadData(m_id,yid) {
     var sdata = {
-        cid : cid,
-        u_id : u_id 
+        m_id : m_id,
+        yid : yid
     };
-$('#divDataview').load('show-flow-normal.php',sdata);
+
+$('#divDataview').load('show-project.php',sdata);
 }
 </script>
   

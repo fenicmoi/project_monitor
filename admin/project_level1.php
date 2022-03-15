@@ -6,25 +6,6 @@ $u_id=$_SESSION['ses_u_id'];
 ?>
 <script>
 	$( document ).ready( function () {
-		$( "#dateSearch" ).hide();
-		$( "tr" ).first().hide();
-
-
-		$( "#hideSearch" ).click( function () {
-			$( "tr" ).first().show( 1000 );
-		} );
-
-
-		$( '#typeSearch' ).change( function () {
-			var typeSearch = $( '#typeSearch' ).val();
-			if ( typeSearch == 4 ) {
-				$( "#dateSearch" ).show( 500 );
-				$( "#search" ).hide( 500 );
-			} else {
-				$( "#dateSearch" ).hide( 500 );
-				$( "#search" ).show( 500 );
-			}
-		} )
 
         $('.depart').select2();
 	} );
@@ -43,6 +24,7 @@ $u_id=$_SESSION['ses_u_id'];
 
                 //ดึงข้อมูลโครงการหลัก
                 $m_id = $_GET['m_id'];
+                echo $m_id;
                 $sql = "SELECT * FROM project_master WHERE m_id = $m_id ";
                 $result = dbQuery($sql);
                 $row = dbFetchAssoc($result);
@@ -53,41 +35,13 @@ $u_id=$_SESSION['ses_u_id'];
         <div  class="col-md-10">
             <div class="panel panel-default" >
                 <div class="panel-heading">
-                <button class="btn btn-warning" onclick="history.back()">กลับโครงการหลัก</button>  <strong><?php echo $row['project_name'];?></strong>
+                <a class="btn btn-warning" href="project_master.php">กลับโครงการหลัก</a>  <strong><?php echo $row['project_name'];?></strong>
                     <a href="" class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#modalAdd"><i class="fa fa-plus " aria-hidden="true"></i> เพิ่มโครงการย่อย</a>
                     <button id="hideSearch" class="btn btn-default pull-right"><i class="fas fa-search"> ค้นหา</i></button>
                 </div>
                  <table class="table table-bordered table-hover" border=2>
                         <thead class="bg-info">
-                            	<tr bgcolor="black">
-                                    <td colspan="8">
-                                        <form class="form-inline" method="post" name="frmSearch" id="frmSearch">
-                                            <div class="form-group">
-                                                <select class="form-control" id="typeSearch" name="typeSearch">
-                                                    <option value="1">เลขส่ง</option>
-                                                    <option value="2" selected>ชื่อเรื่อง</option>
-                                                </select>
-
-                                                <div class="input-group">
-                                                    <input class="form-control" id="search" name="search" type="text" size="80" placeholder="Keyword สั้นๆ">
-                                                    <div class="input-group" id="dateSearch">
-                                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่เริ่มต้น</span>
-                                                        <input class="form-control" id="dateStart" name="dateStart" type="date">
-                                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i>วันที่สิ้นสุด</span>
-                                                        <input class="form-control" id="dateEnd" name="dateEnd" type="date">
-                                                    </div>
-                                                    <div class="input-group-btn">
-                                                        <button class="btn btn-primary" type="submit" name="btnSearch" id="btnSearch">
-                                                                <i class="fas fa-search "></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
                             <tr>
-                                
                                 <th>ลำดับที่</th>
                                 <th>ชื่อโครงการ</th>
                                 <th>ความก้าวหน้า(%)</th>
@@ -106,32 +60,10 @@ $u_id=$_SESSION['ses_u_id'];
                                 $sql="SELECT l1.*,d.dep_name, y.yname FROM project_level1  as l1 
                                       INNER JOIN depart as d  ON d.dep_id = l1.dep_id
                                       INNER JOIN sys_year as y on y.yid = l1.yid 
-                                      ORDER BY l_id DESC";
-                                // print $sql;                     
-                                 //ส่วนการค้นหา
-                                 if(isset($_POST['btnSearch'])){
-                                     @$typeSearch = $_POST[ 'typeSearch' ]; //ประเภทการค้นหา
-                                     @$txt_search = $_POST[ 'search' ]; //กล่องรับข้อความ
-                                    $sql="SELECT * FROM  project_master";
-                                     if ( @$typeSearch == 1 ) { //ค้นด้วยเลขเลขส่ง
-                                        if($level_id <= 2){     
-                                            $sql .= " WHERE m_id LIKE '%$txt_search%' ";
-                                        }else{
-                                            $sql .= " WHERE m_id LIKE '%$txt_search%'  AND m.dep_id=$dep_id  AND sec_id=$sec_id  ";
-                                        }
-                                    } elseif ( @$typeSearch == 2 ) { //ค้นด้วยชื่อชื่อเรื่อง
-                                        if($level_id <=2){
-                                            $sql .= " WHERE title LIKE '%$txt_search%' ";
-                                        }else{
-                                            $sql .= " WHERE title LIKE '%$txt_search%'   AND dep_id=$dep_id  AND sec_id=$sec_id ";
-                                        }
-                                        $sql .= "ORDER BY cid DESC";
-                                    }
-
-                                 }//isset 
-                                // print $level_id;
-                                //print $sql;
-                                $result = page_query( $dbConn, $sql, 10 );
+                                      WHERE l1.m_id =$m_id  ORDER BY l1.order_id ASC
+                                     ";
+             
+                                $result = page_query( $dbConn, $sql, 20 );
                                 while($row = dbFetchArray($result)){?>
                                     <tr>
                                        
@@ -166,7 +98,7 @@ $u_id=$_SESSION['ses_u_id'];
 									page_link_bg_color("lightblue","pink");
 									page_link_font("14px");
 									page_link_color("blue","red");
-									page_echo_pagenums(10,true); 
+									page_echo_pagenums(20,true); 
 								?>
 							</center>
 					</div>
@@ -217,7 +149,7 @@ $u_id=$_SESSION['ses_u_id'];
                                 <td>
                                     <div class="form-group form-inline">
                                         <label for="order_id">ลำดับที่โครงการ : </label>
-                                        <input class="form-control" id="order_id"  name="order_id" type="number" require  >
+                                        <input class="form-control" id="order_id"  name="order_id" type="number"  value='0' require>
                                     </div>
                                 </td>
                             </tr>
@@ -226,7 +158,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group col-4">
                                                 <span class="input-group-addon">ร้อยละความสำเร็จ : </span>
-                                                <input class="form-control" type="text"   name="percentage" id="percentage" required >
+                                                <input class="form-control" type="text"   name="percentage" id="percentage" value='0' required >
                                                 <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
@@ -237,7 +169,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group col-4">
                                                 <span class="input-group-addon">หมายเหตุ : </span>
-                                                <input class="form-control" type="text"   name="remark" id="remark" require>
+                                                <input class="form-control" type="text"   name="remark" id="remark" value="-" require>
                                                 
                                             </div>
                                         </div>
@@ -264,7 +196,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">        
                                             <span class="input-group-addon">งบประมาณ : </span>
-                                            <input class="form-control" type="number" size=100  name="money_total" id="money_total"  required>
+                                            <input class="form-control" type="number" size=100  name="money_total" id="money_total" value="0"  required>
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -275,7 +207,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งบลงทุน : </span>
-                                            <input class="form-control" type="number" size=100   name="inver_budget" id="inver_budget"  require >
+                                            <input class="form-control" type="number" size=100   name="inver_budget" id="inver_budget" value="0"   require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -286,7 +218,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งบดำเนินงาน : </span>
-                                            <input class="form-control" type="number" size=100   name="opra_budget" id="opra_budget" require >
+                                            <input class="form-control" type="number" size=100   name="opra_budget" id="opra_budget" value="0"  require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -297,7 +229,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งวด1 : </span>
-                                            <input class="form-control" type="number" size=100   name="recive1" id="recive1" require >
+                                            <input class="form-control" type="number" size=100   name="recive1" id="recive1" value="0"  require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -308,7 +240,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งวด2 : </span>
-                                            <input class="form-control" type="number" size=100   name="recive2" id="recive2" require >
+                                            <input class="form-control" type="number" size=100   name="recive2" id="recive2" value="0"  require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -319,7 +251,7 @@ $u_id=$_SESSION['ses_u_id'];
                                         <div class="form-group">
                                             <div class="input-group">
                                             <span class="input-group-addon">งวด3 : </span>
-                                            <input class="form-control" type="number" size=100   name="recive3" id="recive3" require >
+                                            <input class="form-control" type="number" size=100   name="recive3" id="recive3" value="0"  require >
                                             <span class="input-group-addon">บาท : </span>
                                             </div>
                                         </div>
@@ -396,8 +328,8 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                     VALUE($m_id, $order_id, '$level1name', $money_total, $inver_budget, $opra_budget, $recive1, $recive2, $recive3, $yid, $dep_id, $percentage, '$remark')
                 
                     ";
-       echo $sqlInsert;
-       /*
+      // echo $sqlInsert;
+       
         $result=dbQuery($sqlInsert);
          if($result){
             echo "<script>
@@ -408,7 +340,7 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='project_level1.php';
+                        window.location.href='project_level1.php?m_id=$m_id';
                     }
                 }); 
             </script>";
@@ -421,12 +353,12 @@ if(isset($_POST['save'])){   //กดปุ่มบันทึกจากฟ�
                 },
                 function(isConfirm){
                     if(isConfirm){
-                        window.location.href='project_level1.php';
+                        window.location.href='project_level1.php?m_id=$m_id';
                     }
                 }); 
             </script>";
         } 
-        */
+        
         
 }
 
