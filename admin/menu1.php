@@ -23,7 +23,7 @@ if(!isset($_SESSION['ses_u_id'])){
           <div class="panel-body">
               <a href="index_admin.php" class="btn btn-primary btn-block" href><i class="fas fa-home pull-left" aria-hidden="true"></i> หน้าหลัก</a>
               <a href="year.php" class="btn btn-primary btn-block" href><i class="fas fa-calendar-alt  pull-left" aria-hidden="true"></i> จัดการปีปฏิทิน-ทะเบียนเอกสาร</a>
-              <a href="object.php" class="btn btn-primary btn-block" href><i class="fas fa-key pull-left"></i> ด้านการพัฒนา </a>
+              <a href="target.php" class="btn btn-primary btn-block" href><i class="fas fa-key pull-left"></i> ประเด็นการพัฒนา </a>
               <a href="speed.php" class="btn btn-primary btn-block"><i class="fas fa-paper-plane pull-left"></i> แหล่งงบประมาณ</a>
               <a href="secret.php" class="btn btn-primary btn-block"><i class="fas fa-low-vision pull-left"></i> xxx</a>
               <a href="officeType.php" class="btn btn-primary btn-block"><i class="fas fa-building pull-left"></i> ประเภทหน่วยงาน</a>
